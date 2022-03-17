@@ -14,9 +14,9 @@ function SongEmbed(Info, user) {
     let Embed = new MessageEmbed()
         .setTitle(`${Info.name}`)
         .setThumbnail(Info.album.images[0].url)
-        .setTimestamp()
+        .setURL(Info["external_urls"]["spotify"])
+        .setTimestamp();
 
-    Embed.setURL(Info["external_urls"]["spotify"]);
     Embed.addFields(
         [
             {
@@ -82,15 +82,16 @@ LiveShare.on('presenceUpdate', async (info) => {
             for (const Activity of Activities) {
                 if (Activity.id === 'spotify:1') {
                     const Channel = await Guild.channels.fetch(ShareChannel);
-
                     const Party = await PartyCheck(Activity.details, Activity.state);
+
                     if (Party) {
                         const Messages = await Channel.messages.fetch();
                         let Message = Messages.get(Party);
+
                         if (Message) {
                             if (!Message.embeds[0].footer.text.includes(`${info.user.username}`)) {
                                 Message.embeds[0].footer.text += `, ${info.user.username}`;
-                                await Message.edit({ embeds: [Message.embeds[0]] });
+                                await Message.edit({embeds: [Message.embeds[0]]});
                             }
                         }
                     } else {
