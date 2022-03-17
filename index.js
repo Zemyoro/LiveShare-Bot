@@ -28,10 +28,7 @@ function SongEmbed (Info, user) {
         }
     )
 
-    for (const i in Info.album["artists"]) {
-        Artists[i] = Info.album["artists"][i].name;
-    }
-
+    for (const i in Info.album["artists"]) Artists[i] = Info.album["artists"][i].name;
     if (Artists.length > 1) Embed.addField('Artist names', Artists.join('\n'))
     else Embed.addField('Artist name', Artists[0]);
 
@@ -40,7 +37,7 @@ function SongEmbed (Info, user) {
     return Embed;
 }
 
-function PushDetails (Activity, info) {
+function PushDetails (Activity, info, messageId) {
     for (const i in CurrentSong) {
         if (CurrentSong[i].id === info.userId) {
             CurrentSong.splice(parseInt(i), 1);
@@ -50,18 +47,28 @@ function PushDetails (Activity, info) {
     CurrentSong.push({
         id: info.userId,
         title: Activity.details,
-        artist: Activity.state
+        artist: Activity.state,
+        msgId: messageId
     });
 }
 
-async function GetInformation (Activity) {
-    return await Spotify.request(`https://api.spotify.com/v1/tracks/${Activity.syncId}`);
+async function CommenceTheStinky (Activity, info, Channel) {
+    const Response = await Spotify.request(`https://api.spotify.com/v1/tracks/${Activity.syncId}`);
+    await Channel.send({embeds: [SongEmbed(Response, info.user)]}).then((msg) => {
+        PushDetails(Activity, info, msg.id);
+    })
 }
 
-async function CommenceTheStinky (Activity, info, Channel) {
-    const Response = await GetInformation(Activity)
-    PushDetails(Activity, info);
-    Channel.send({embeds: [SongEmbed(Response, info.user)]});
+async function PartyCheck (name, artist) {
+    if (CurrentSong.length) {
+        for (const i in CurrentSong) {
+            if (CurrentSong[i].title === name
+                && CurrentSong[i].artist === artist) {
+                return CurrentSong[i].msgId;
+            }
+        }
+    }
+    return false;
 }
 
 LiveShare.on('presenceUpdate', async (info) => {
@@ -74,16 +81,26 @@ LiveShare.on('presenceUpdate', async (info) => {
                 if (Activity.id === 'spotify:1') {
                     const Channel = await Guild.channels.fetch(ShareChannel);
 
-                    if (!CurrentSong.length) {
-                        const Response = await GetInformation(Activity)
-                        PushDetails(Activity, info);
-                        Channel.send({ embeds: [SongEmbed(Response, info.user)] });
+                    const Party = await PartyCheck(Activity.details, Activity.state)
+                    if (Party) {
+                        const Messages = await Channel.messages.fetch();
+                        let Message = Messages.get(Party);
+                        if (Message) {
+                            if (!Message.embeds[0].footer.text.includes(`${info.user.username}`)) {
+                                Message.embeds[0].footer.text += `, ${info.user.username}`
+                                await Message.edit({embeds: [Message.embeds[0]]});
+                            }
+                        }
                     } else {
-                        for (const i in CurrentSong) {
-                            if (Activity.details !== CurrentSong[i].title && CurrentSong[i].id === info.userId) {
-                                await CommenceTheStinky(Activity, info, Channel);
-                            } else if (parseInt(i) + 1 === CurrentSong.length && CurrentSong[i].id !== info.userId) {
-                                await CommenceTheStinky(Activity, info, Channel);
+                        if (!CurrentSong.length) {
+                            await CommenceTheStinky(Activity, info, Channel);
+                        } else {
+                            for (const i in CurrentSong) {
+                                if (Activity.details !== CurrentSong[i].title && CurrentSong[i].id === info.userId) {
+                                    await CommenceTheStinky(Activity, info, Channel);
+                                } else if (parseInt(i) + 1 === CurrentSong.length && CurrentSong[i].id !== info.userId) {
+                                    await CommenceTheStinky(Activity, info, Channel);
+                                }
                             }
                         }
                     }
