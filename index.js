@@ -101,7 +101,7 @@ LiveShare.on('presenceUpdate', async (info) => {
                             for (const i in CurrentSong) {
                                 if (Activity.details !== CurrentSong[i].title && CurrentSong[i].id === info.userId) {
                                     await CommenceTheStinky(Activity, info, Channel);
-                                } else if (parseInt(i) + 1 === CurrentSong.length && CurrentSong[i].id !== info.userId) {
+                                } else if (parseInt(i) + 1 <= CurrentSong.length && CurrentSong[i].id !== info.userId) {
                                     await CommenceTheStinky(Activity, info, Channel);
                                 }
                             }
