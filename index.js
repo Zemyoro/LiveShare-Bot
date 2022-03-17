@@ -9,7 +9,7 @@ const Spotify = new NodeSpotify({ id: '', secret: '' });
 const Users = [];
 
 let CurrentSong = [];
-function SongEmbed (Info, user) {
+function SongEmbed(Info, user) {
     const Artists = [];
     let Embed = new MessageEmbed()
         .setTitle(`${Info.name}`)
@@ -18,15 +18,17 @@ function SongEmbed (Info, user) {
 
     Embed.setURL(Info["external_urls"]["spotify"]);
     Embed.addFields(
-        {
-            name: 'Monthly popularity',
-            value: `${Math.trunc(Info["popularity"] / 10)} / 10`
-        },
-        {
-            name: 'Album',
-            value: Info['album'].name
-        }
-    )
+        [
+            {
+                name: 'Monthly popularity',
+                value: `${Math.trunc(Info["popularity"] / 10)} / 10`
+            },
+            {
+                name: 'Album',
+                value: Info['album'].name
+            }
+        ]
+    );
 
     for (const i in Info.album["artists"]) Artists[i] = Info.album["artists"][i].name;
     if (Artists.length > 1) Embed.addField('Artist names', Artists.join('\n'))
@@ -37,7 +39,7 @@ function SongEmbed (Info, user) {
     return Embed;
 }
 
-function PushDetails (Activity, info, messageId) {
+function PushDetails(Activity, info, messageId) {
     for (const i in CurrentSong) {
         if (CurrentSong[i].id === info.userId) {
             CurrentSong.splice(parseInt(i), 1);
@@ -52,14 +54,14 @@ function PushDetails (Activity, info, messageId) {
     });
 }
 
-async function CommenceTheStinky (Activity, info, Channel) {
+async function CommenceTheStinky(Activity, info, Channel) {
     const Response = await Spotify.request(`https://api.spotify.com/v1/tracks/${Activity.syncId}`);
-    await Channel.send({embeds: [SongEmbed(Response, info.user)]}).then((msg) => {
+    await Channel.send({ embeds: [SongEmbed(Response, info.user)] }).then((msg) => {
         PushDetails(Activity, info, msg.id);
-    })
+    });
 }
 
-async function PartyCheck (name, artist) {
+async function PartyCheck(name, artist) {
     if (CurrentSong.length) {
         for (const i in CurrentSong) {
             if (CurrentSong[i].title === name
@@ -81,14 +83,14 @@ LiveShare.on('presenceUpdate', async (info) => {
                 if (Activity.id === 'spotify:1') {
                     const Channel = await Guild.channels.fetch(ShareChannel);
 
-                    const Party = await PartyCheck(Activity.details, Activity.state)
+                    const Party = await PartyCheck(Activity.details, Activity.state);
                     if (Party) {
                         const Messages = await Channel.messages.fetch();
                         let Message = Messages.get(Party);
                         if (Message) {
                             if (!Message.embeds[0].footer.text.includes(`${info.user.username}`)) {
-                                Message.embeds[0].footer.text += `, ${info.user.username}`
-                                await Message.edit({embeds: [Message.embeds[0]]});
+                                Message.embeds[0].footer.text += `, ${info.user.username}`;
+                                await Message.edit({ embeds: [Message.embeds[0]] });
                             }
                         }
                     } else {
@@ -111,5 +113,5 @@ LiveShare.on('presenceUpdate', async (info) => {
 });
 
 LiveShare.login(Token).then(() => {
-   console.log('Ready!');
+    console.log('Ready!');
 });
