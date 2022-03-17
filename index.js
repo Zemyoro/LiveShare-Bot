@@ -3,7 +3,7 @@ const NodeSpotify = require('node-spotify-api');
 
 const ShareChannel = '';
 const Token = '';
-const LiveShare = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES] });
+const LiveShare = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES] });
 const Spotify = new NodeSpotify({ id: '', secret: '' });
 
 const Users = [];
@@ -34,7 +34,7 @@ function SongEmbed(Info, user) {
     if (Artists.length > 1) Embed.addField('Artist names', Artists.join('\n'))
     else Embed.addField('Artist name', Artists[0]);
 
-    Embed.addField('Release date', `${Info['album']["release_date"]}\n(Year/Month/Day)`, true);
+    Embed.addField('Release date', `${Info['album']["release_date"].replaceAll('-', '/')}\n(Year/Month/Day)`, true);
     Embed.setFooter({ text: `Playing for ${user.username}` });
     return Embed;
 }
