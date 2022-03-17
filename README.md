@@ -3,3 +3,5 @@
 
 ## Note
  This Discord bot isn't finished and the code is a bit spooky tbh.
+
+## [TypeScript version](https://github.com/Zemyoro/LiveShare-Bot/tree/TypeScript)
