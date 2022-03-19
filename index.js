@@ -3,7 +3,7 @@ const NodeSpotify = require('node-spotify-api');
 
 const ShareChannel = '';
 const Token = '';
-const LiveShare = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES] });
+const Melody = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES] });
 const Spotify = new NodeSpotify({ id: '', secret: '' });
 
 const Users = [];
@@ -73,10 +73,10 @@ async function PartyCheck(name, artist) {
     return false;
 }
 
-LiveShare.on('presenceUpdate', async (info) => {
+Melody.on('presenceUpdate', async (info) => {
     for (const User of Users) {
         if (info && info.userId === User) {
-            const Guild = await LiveShare.guilds.fetch(info.guild.id);
+            const Guild = await Melody.guilds.fetch(info.guild.id);
             const Activities = Guild.presences.cache.get(info.userId).activities;
             if (!Activities) return;
             for (const Activity of Activities) {
@@ -113,6 +113,6 @@ LiveShare.on('presenceUpdate', async (info) => {
     }
 });
 
-LiveShare.login(Token).then(() => {
+Melody.login(Token).then(() => {
     console.log('Ready!');
 });
