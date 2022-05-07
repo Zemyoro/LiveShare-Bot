@@ -1,10 +1,4 @@
+.*
 dist
-yarn.lock
-package-lock.json
+*lock*
 node_modules
-
-.vs
-.idea
-.vscode
-.DS_Store
-.env
