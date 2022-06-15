@@ -1,7 +1,6 @@
-import { Activity, MessageEmbed, Presence } from "discord.js";
+import { Activity, ColorResolvable, MessageEmbed, Presence } from "discord.js";
+import { getColorFromURL } from 'color-thief-node';
 import { Client } from "../client";
-
-const { getColorFromURL } = require('color-thief-node');
 
 export default async function (song: any, info: Presence, activity: Activity, client: Client) {
 	let artists: any[] = [];
@@ -17,20 +16,8 @@ export default async function (song: any, info: Presence, activity: Activity, cl
 			: `https://www.antidote71.com/wp-content/uploads/2018/11/spotify-logo.png`
 	};
 
-	try {
-		let color = await getColorFromURL(song.album.images[song.album.images.length - 1].url.split('?')[0]);
-		console.log(color);
-
-		function hex(c: number) { return c.toString(16).length == 1 ? '0' + c.toString(16) : c.toString(16) }
-		function converter(r: number, g: number, b: number) {
-			const color = `#` + `${hex(r)}${hex(g)}${hex(b)}`
-			return parseInt(color.replace('#', '0x'));
-		}
-
-		base.setColor(converter(color[0], color[1], color[2]));
-	} catch (e) {
-		base.setColor('#ffffff');
-	}
+	const color = await getColorFromURL(song.album.images[song.album.images.length - 1].url.split('?')[0]).catch(() => null);
+	base.setColor(color ? `${color}` as ColorResolvable : 'RANDOM');
 
 	base.addFields(
 		{

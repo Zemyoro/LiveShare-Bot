@@ -34,6 +34,7 @@ exec('pm2 list', (err, stdout, stderr) => {
                     console.log('There was an error restarting Melody.');
                     console.log(err || 'No error message.');
                     console.log(stderr || 'No stderr message.');
+                    process.exit(0);
                 }
 
                 console.log('Melody has been restarted.');
@@ -44,6 +45,7 @@ exec('pm2 list', (err, stdout, stderr) => {
                     console.log('There was an error removing Melody from pm2.');
                     console.log(err || 'No error message.');
                     console.log(stderr || 'No stderr message.');
+                    process.exit(0);
                 }
                 console.log('Unusual Melody process has been removed.');
                 host();
@@ -61,6 +63,7 @@ function host() {
             console.log('An error occurred while starting Melody.');
             console.log(err || 'No error message.');
             console.log(stderr || 'No stderr message.');
+            process.exit(0);
         }
 
         console.log('Melody is now hosting.');

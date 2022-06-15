@@ -1,6 +1,6 @@
 {
   "name": "melody",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Discord bot for sharing Spotify Discord presence to a guild channel.",
   "main": "./dist/index.js",
   "scripts": {
@@ -15,11 +15,14 @@
   "license": "GPL-3.0",
   "dependencies": {
     "color-thief-node": "^1.0.4",
-    "discord.js": "^13.6.0",
-    "dotenv": "^16.0.0",
+    "discord.js": "^13.8.0",
+    "dotenv": "^16.0.1",
     "node-spotify-api": "^1.1.1",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.16",
     "pretty-error": "^4.0.0",
-    "typescript": "^4.7.0-dev.20220317"
+    "typescript": "4.5.5"
+  },
+  "devDependencies": {
+    "@types/color-thief-node": "^1.0.1"
   }
 }

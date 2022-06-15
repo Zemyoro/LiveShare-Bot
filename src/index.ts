@@ -2,7 +2,7 @@ import { Client, Intents } from "./client";
 import main from "./functions/main";
 require('pretty-error').start();
 import users from "./config";
-require('dotenv').config();
+import 'dotenv/config';
 
 const melody = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES] });
 

@@ -15,6 +15,12 @@ e.g. `nano src/config.ts`
 5. `npm run start` to start the bot
 6. `npm run host` to host the bot
 
+## Updating
+Every major update (e.g. 1.0.0, 2.0.0, 3.0.0, etc.) is recommended to do a fresh clone and follow [instructions](#instructions) if any problems occur.
+1. Pull any changes: `git pull`
+2. Install modules: `npm install`
+3. Compile: `tsc`
+
 ## Known issues
 * (Fixed) Pixman-1 error on Linux:<br>
 `sudo apt install libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg8-dev libgif-dev`
