@@ -1,0 +1,8 @@
+dist
+*lock*
+node_modules
+
+.vs
+.env
+.dist
+.vscode
