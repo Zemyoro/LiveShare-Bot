@@ -1,22 +1,10 @@
-if (!process.argv[2] || process.argv[2] !== '--pm2') {
-    console.log('Run this script with a --pm2 parameter to confirm you installed pm2 globally.');
-    console.log('NPM: npm install -g pm2');
-    console.log('\nWhen finished: npm run host --pm2');
-    process.exit(0);
-}
-
 const { exec } = require('child_process');
 const { version } = require('../package.json');
 
 exec('pm2 list', (err, stdout, stderr) => {
     if (err || stderr) {
-        console.log('You may have not installed pm2 globally.');
-        console.log('NPM: npm install -g pm2');
-        console.log('\nThen run this script again.');
-
-        // Uncomment to check error.
-        // console.log(err);
-        // console.log(stderr);
+        console.log(err || 'No error message.');
+        console.log(stderr || 'No stderr message.');
 
         process.exit(0);
     }
