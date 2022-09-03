@@ -1,21 +1,30 @@
-import { Client as client, Collection, TextChannel } from "discord.js";
+import { Client, ClientOptions, Collection, TextChannel } from 'discord.js';
+import 'dotenv/config';
 
-export { Intents } from 'discord.js';
-require('dotenv').config();
+export class Melody extends Client {
+    list: Collection<string, MelodyProfile>;
+    channel?: TextChannel;
+    VERBOSE: boolean;
+    USERS: string[];
+    constructor(options: ClientOptions) {
+        super(options);
 
-export class Client extends client {
-	current: Collection<any, any>
-	channel?: TextChannel
+        this.list = new Collection();
 
-	constructor(options: any) {
-		super(options);
-
-		this.current = new Collection();
-	}
+        this.VERBOSE = (process.env.VERBOSE === 'true') || false;
+        this.USERS = process.env.USERS?.split(' ') || [];
+    }
 }
 
-const NodeSpotify = require('node-spotify-api');
-export const spotify = new NodeSpotify({
-	id: process.env.SPOTIFY_ID,
-	secret: process.env.SPOTIFY_SECRET
+export { Activity } from 'discord.js';
+export const Spotify = new (require('node-spotify-api'))({
+    id: process.env.SPOTIFY_ID,
+    secret: process.env.SPOTIFY_SECRET
 });
+
+export interface MelodyProfile {
+    syncId: string;
+    partyId: string | null;
+    state: boolean;
+    msg: string
+}

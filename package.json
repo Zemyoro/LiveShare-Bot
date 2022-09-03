@@ -1,7 +1,7 @@
 {
   "name": "melody",
-  "version": "2.5.1",
-  "description": "Discord bot for sharing Spotify Discord presence to a guild channel.",
+  "version": "3.0.0",
+  "description": "Share what you're listening to on Spotify with a Discord channel",
   "main": "./dist/index.js",
   "scripts": {
     "start": "tsc && node .",
@@ -9,21 +9,19 @@
     "host": "tsc && node ./utils/host.js",
     "postinstall": "tsc && node ./utils/dependencyInstaller.js"
   },
-  "authors": [
-    "Zemyoro",
-    "TWS_Gravity"
-  ],
+  "author": "Zemyoro + TWS_Gravity",
   "license": "GPL-3.0",
   "dependencies": {
     "cli-select": "^1.1.2",
     "color-thief-node": "^1.0.4",
-    "discord.js": "^13.8.0",
-    "dotenv": "^16.0.1",
+    "discord.js": "13.8",
+    "dotenv": "^16.0.2",
     "node-spotify-api": "^1.1.1",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.19",
     "pretty-error": "^4.0.0",
     "shell-exec": "^1.1.2",
-    "typescript": "4.5.5"
+    "ts-node": "^10.9.1",
+    "typescript": "4.5"
   },
   "devDependencies": {
     "@types/color-thief-node": "^1.0.1"
