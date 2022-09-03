@@ -13,9 +13,9 @@ export default async function (info: AIO, client: Melody) {
         if (profile.syncId === info.syncId) {
             party = true;
             await client.channel?.messages.fetch(profile.msg).then(msg => {
-                if (!msg.embeds[0].footer?.text.includes(`${info.user?.username}`)) {
+                if (!msg.embeds[0].footer?.text.includes(`${info.user?.tag}`)) {
                     msg.embeds[0].footer = {
-                        text: `${msg.embeds[0].footer?.text}, ${info.user?.username}`
+                        text: `${msg.embeds[0].footer?.text}, ${info.user?.tag}`
                     }
                     msg.edit({ embeds: msg.embeds });
                 }
