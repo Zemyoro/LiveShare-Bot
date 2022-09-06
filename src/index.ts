@@ -6,7 +6,12 @@ require('pretty-error').start();
 import main from './modules';
 import 'dotenv/config';
 
-const melody = new Melody({ intents: ['GUILDS', 'GUILD_PRESENCES'] });
+const melody = new Melody({
+    intents: ['GUILDS', 'GUILD_PRESENCES'],
+    restRequestTimeout: process.env.REST_TIMEOUT
+        ? parseInt(process.env.REST_TIMEOUT) * 1000
+        : undefined
+});
 
 melody.on('presenceUpdate', async (info) => {
     if (info && info.user && melody.USERS?.includes(info.user.id)) {
@@ -68,7 +73,7 @@ async function error(e: Error, exit?: boolean) {
 
     console.log(e);
     await melody.channel?.send({
-        content: `${eachMention.join(', ') || 'No one to mention.'}`, 
+        content: `${eachMention.join(', ') || 'No one to mention.'}`,
         embeds: [
             new MessageEmbed()
                 .setTitle(`${e.message}`)
