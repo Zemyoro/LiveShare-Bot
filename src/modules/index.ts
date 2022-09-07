@@ -2,6 +2,7 @@ import { getColorFromURL } from 'color-thief-node';
 import { Melody, Spotify } from '../client';
 import { MessageEmbed } from 'discord.js';
 import { AIO } from './aio';
+import log from './log';
 
 export default async function (info: AIO, client: Melody) {
     const response = await Spotify.request(`https://api.spotify.com/v1/tracks/${info.syncId}`);
@@ -42,5 +43,7 @@ export default async function (info: AIO, client: Melody) {
             state: true,
             msg: msg.id
         });
+    }).catch(() => {
+        log('(Main) Failed to send message');
     });
 }

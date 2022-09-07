@@ -4,6 +4,7 @@
 
 import { Melody } from '../client';
 import { AIO } from './aio';
+import log from './log';
 
 export default async function (info: AIO, client: Melody) {
     if (!client.list.size) return false;
@@ -17,9 +18,15 @@ export default async function (info: AIO, client: Melody) {
                     msg.embeds[0].footer = {
                         text: `${msg.embeds[0].footer?.text}, ${info.user?.tag}`
                     }
-                    msg.edit({ embeds: msg.embeds });
+                    msg.edit({ embeds: msg.embeds }).catch(() => {
+                        party = false;
+                        log('(Party) Failed to edit message');
+                    });
                 }
-            }).catch(() => null);
+            }).catch(() => {
+                party = false;
+                log('(Party) Failed to fetch message');
+            });
         }
     }
 

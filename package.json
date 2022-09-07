@@ -1,6 +1,6 @@
 {
   "name": "melody",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Share what you're listening to on Spotify with a Discord channel",
   "main": "./dist/index.js",
   "scripts": {
