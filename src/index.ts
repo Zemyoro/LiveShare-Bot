@@ -136,6 +136,7 @@ async function data(interaction: ButtonInteraction | ModalSubmitInteraction, dat
                 config.mode = config.mode === 'all' ? 'list' : 'all';
                 updateConfig(config);
 
+                refreshPresence()
                 return interaction.update({ embeds: [refreshedMainEmbed()], components: [refreshedMainRow()] });
         }
     } else {
