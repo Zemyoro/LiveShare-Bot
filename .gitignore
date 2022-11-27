@@ -1,8 +1,4 @@
-dist
-*lock*
 node_modules
-
-.vs
+*lock
+dist
 .env
-.idea
-.vscode

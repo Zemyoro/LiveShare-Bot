@@ -1,22 +1,17 @@
-import { Client, ClientOptions, Collection, TextChannel } from 'discord.js';
+import { Client, ClientOptions, Collection } from 'discord.js';
 import 'dotenv/config';
 
 export class Melody extends Client {
-    list: Collection<string, MelodyProfile>;
-    channel?: TextChannel;
-    VERBOSE: boolean;
-    USERS: string[];
+    data: Collection<string, any>; // Button and modal data
+    list: Collection<string, MelodyProfile>; // List of members who've played music
     constructor(options: ClientOptions) {
         super(options);
 
-        this.list = new Collection();
-
-        this.VERBOSE = (process.env.VERBOSE === 'true') || false;
-        this.USERS = process.env.USERS?.split(' ') || [];
+        this.data = new Collection();
+        this.list = new Collection()
     }
 }
 
-export { Activity } from 'discord.js';
 export const Spotify = new (require('node-spotify-api'))({
     id: process.env.SPOTIFY_ID,
     secret: process.env.SPOTIFY_SECRET
@@ -26,5 +21,5 @@ export interface MelodyProfile {
     syncId: string;
     partyId: string | null;
     state: boolean;
-    msg: string
+    msg: string;
 }
